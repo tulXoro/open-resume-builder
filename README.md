@@ -17,13 +17,21 @@ Use this however you see fit.
 - [Node.js](https://nodejs.org/en) v21.1.0 or later
 - [pnpm](https://pnpm.io/)
 - [Python](https://www.python.org/) (probably 3.10 or later)
-- [Docker](https://www.docker.com/) (optional)
+- [Docker](https://www.docker.com/) (optional, but recommended)
 
 ## Installation
 
 ### Docker (recommended)
 
 1. Clone the repository and change directory into it.
+2. Build the Docker image with `docker compose build`.
+3. Start the app using `docker compose up`.
+
+    *Note: You may want to pull models with `docker compose exec ollama ollama pull <model>`, where `<model>` is the name of the model you want to pull.*
+
+    Example: `docker compose exec ollama ollama pull llama2`
+
+    Feel free to add more models by editing the `main.py` file in `backend/main.py`.
 
 ### Manual
 
