@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import httpx
 
+
 app = FastAPI()
 
 # CORS Configuration
@@ -13,19 +14,32 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True
 )
+    
+local_models = []
+
+with httpx.Client() as client:
+    print("Attempting to get models")
+    try:
+        response = client.get("http://ollama:11434/api/tags")
+        local_models = response.json()
+    except httpx.RequestError as e:
+        local_models = []  # Fallback to an empty list if the request fails
+        print(f"Error fetching models: {str(e)}")
 
 class ResumeRequest(BaseModel):
     background: str
     job_description: str
     model: str = "mixtral"
+    
+@app.get("/api/models")
+async def get_models():
+    print("Attempting to get models")
+    return local_models
+
 
 @app.post("/api/generate-resume")
 async def generate_resume(request: ResumeRequest):
-    # Validate model
-    allowed_models = ['mixtral', 'llama3', 'phi3', 'llama2']
-    if request.model not in allowed_models:
-        raise HTTPException(status_code=400, detail="Invalid model selected")
-    
+
     try:
         prompt = f"""Create a professional resume based on this background:
 {request.background}
@@ -70,8 +84,7 @@ Format requirements:
                 raise HTTPException(
                     status_code=response.status_code,
                     detail={
-                        "error": "Ollama API !",
-                        "status_code": response.status_code,
+                        "error": "Ollama API! " + request.model + " failed to generate a resume",
                         "response": error_details
                     }
                 )

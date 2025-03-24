@@ -1,15 +1,27 @@
 <script>
-  let background = '';
-  let jobDescription = '';
-  let resume = '';
-  let isLoading = false;
-  let selectedModel = 'mixtral'; // Default value
-  const MODELS = [
-    { name: 'Mixtral (Best)', value: 'mixtral' },
-    { name: 'Llama3 (Fast)', value: 'llama3' },
-    { name: 'Phi-3 (Lightweight)', value: 'phi3' },
-    { name: 'Llama2 (Balanced)', value: 'llama2' },
-  ];
+	import { onMount } from "svelte";
+
+  let background = $state('');
+  let jobDescription = $state('');
+  let resume = $state('');
+  let isLoading = $state(false);
+  let selectedModel = $state(''); // Default value
+  /**
+	 * @type {any[]}
+	 */
+  let models = $state([]);
+
+  async function getModels () {
+    try {
+      const response = await fetch('http://localhost:8000/api/models');
+      models = await response.json().then(data => data.models);
+      // convert models to array of strings with only name.
+      models = models.map(model => model.name.split(':')[0]);
+      selectedModel = models[0];
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function generateResume() {
     isLoading = true;
@@ -30,6 +42,9 @@
     }
     isLoading = false;
   }
+
+  onMount(getModels);
+
 </script>
 
 <main>
@@ -38,19 +53,19 @@
     <label>
       Your Background:
       a
-      <textarea bind:value={background} rows="5"></textarea>
+      <textarea value={background} rows="5"></textarea>
     </label>
     
     <label>
       Job Description:
-      <textarea bind:value={jobDescription} rows="5"></textarea>
+      <textarea value={jobDescription} rows="5"></textarea>
     </label>
     
     <label>
       AI Model:
-      <select bind:value={selectedModel}>
-        {#each MODELS as model}
-          <option value={model.value}>{model.name}</option>
+      <select>
+        {#each models as model}
+          <option value={model}>{model}</option>
         {/each}
       </select>
     </label>
@@ -61,8 +76,8 @@
   </form>
 
   {#if isLoading}
-  <p>Generating your resume, please wait...</p>
-{/if}
+    <p>Generating your resume, please wait...</p>
+  {/if}
 
   {#if resume}
     <div class="resume-output">
