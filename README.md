@@ -15,7 +15,6 @@ Use this however you see fit.
 ## Dependencies
 
 - [Node.js](https://nodejs.org/en) v21.1.0 or later
-- [pnpm](https://pnpm.io/)
 - [Python](https://www.python.org/) (probably 3.10 or later)
 - [Docker](https://www.docker.com/) (optional, but recommended)
 
