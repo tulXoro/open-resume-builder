@@ -1,0 +1,76 @@
+services:
+  frontend:
+    container_name: frontend
+    image: frontend
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /app/src
+          ignore:
+            - node_modules
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend:
+    container_name: backend
+    image: backend
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/app
+          target: /app/src
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      ollama:
+        condition: service_healthy
+  
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    volumes:
+      - ollama:/root/.ollama
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+    ports:
+      - 11434:11434
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    
+  # model-init:
+  #   image: ollama/ollama
+  #   entrypoint: ["/bin/sh", "-c"]
+  #   depends_on:
+  #     ollama:
+  #       condition: service_healthy
+  #   volumes:
+  #     - ollama:/root/.ollama
+  #   restart: "no"
+  #   networks:
+  #     - default
+  
+volumes:
+  ollama:
+    driver: local
