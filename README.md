@@ -35,9 +35,8 @@ Use this however you see fit.
 ### Manual
 
 1. Clone the repository and change directory into it.
-2. Install necessary dependencies with `pnpm i`.
-3. Start the app using `pnpm run dev`.
+2. Further instructions will be added at a later time....
 
 ## Contributing
 
-You can contribute.
+You can contribute by submitting a pull request or opening an issue.
