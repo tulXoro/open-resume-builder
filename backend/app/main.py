@@ -41,24 +41,17 @@ async def get_models():
 async def generate_resume(request: ResumeRequest):
 
     try:
-        prompt = f"""Create a professional resume based on this background:
-{request.background}
-
-Tailor it specifically for this job description:
-{request.job_description}
-
-Include these sections:
-- Professional Summary
-- Core Competencies
-- Technical Skills
-- Professional Experience
-- Education
-
-Format requirements:
-- Use bullet points for achievements
+        prompt = f"""[ROLE] Expert Resume Writer
+[TASK] Generate bullet points for job experience
+[FOCUS] Highlight transferable skills from the user's background: {request.background}
+[TARGET JOB] Tailor the bullet points to match this job description: {request.job_description}
+[FORMAT] Provide concise bullet points
+[REQUIREMENTS]
+- Use industry-specific keywords from the target job description
+- Emphasize relevant achievements and skills
 - Quantify results where possible
-- Use industry-specific keywords"""
-        
+- Use professional and action-oriented language"""
+
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "http://ollama:11434/api/generate",
@@ -84,13 +77,13 @@ Format requirements:
                 raise HTTPException(
                     status_code=response.status_code,
                     detail={
-                        "error": "Ollama API! " + request.model + " failed to generate a resume",
+                        "error": "Ollama API! " + request.model + " failed to generate bullet points",
                         "response": error_details
                     }
                 )
             
-            # Return the generated resume
-            return {"resume": response.json()["response"]}
+            # Return the generated bullet points
+            return {"bullet_points": response.json()["response"]}
     
     except httpx.RequestError as e:
         # Handle network-related errors (e.g., connection issues, timeouts)
