@@ -9,7 +9,7 @@
 
 	let bulletPoints = $state('');
 	let isLoading = $state(false);
-	let selectedModel = ''; // Default value
+	let selectedModel = $state(''); // Default value
 	/**
 	 * @type {any[]}
 	 */
@@ -33,7 +33,7 @@
 	async function generateBulletPoints(event) {
 		event.preventDefault();
 		isLoading = true;
-    console.log(targetJobDesc);
+    console.log(selectedModel);
 		try {
 			const response = await fetch('http://localhost:8000/api/generate-experience', {
 				method: 'POST',
