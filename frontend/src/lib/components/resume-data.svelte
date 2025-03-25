@@ -48,19 +48,19 @@ let educationForms = $state([]);
             <label for="school">
                 School:
             </label>
-            <input bind:value={form.school} type="text" name="school" id="school" required />
+            <input value={form.school} type="text" name="school" id="school" required />
             <label for="degree">
                 Degree:
             </label>
-            <input bind:value={form.degree} type="text" name="degree" id="degree" required />
+            <input value={form.degree} type="text" name="degree" id="degree" required />
             <label for="start_date">
                 Start Date:
             </label>
-            <input bind:value={form.start_date} type="date" name="start_date" id="start_date" required />
+            <input value={form.start_date} type="date" name="start_date" id="start_date" required />
             <label for="end_date">
-                End Date:
+                End Date (or expected):
             </label>
-            <input bind:value={form.end_date} type="date" name="end_date" id="end_date" required />
+            <input value={form.end_date} type="date" name="end_date" id="end_date" required />
             <button type="button" onclick={() => {
                 educationForms = educationForms.filter((_, index) => index !== i).map((form, newIndex) => ({
                     ...form,
