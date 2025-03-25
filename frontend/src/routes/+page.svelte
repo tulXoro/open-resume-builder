@@ -3,9 +3,9 @@
 	import { ResumeData } from '$lib';
 
 	let userJobTitle = $state('');
-	let userJobDesc = '';
-	let targetJobTitle = '';
-	let targetJobDesc = '';
+	let userJobDesc = $state('');
+	let targetJobTitle = $state('');
+	let targetJobDesc = $state('');
 
 	let bulletPoints = $state('');
 	let isLoading = $state(false);
@@ -33,6 +33,7 @@
 	async function generateBulletPoints(event) {
 		event.preventDefault();
 		isLoading = true;
+    console.log(targetJobDesc);
 		try {
 			const response = await fetch('http://localhost:8000/api/generate-experience', {
 				method: 'POST',
@@ -65,13 +66,13 @@
 		<input name="Your Job Title" type="text" bind:value={userJobTitle} required />
 
 		<label for="Your Job Description"> What you did: </label>
-		<textarea name="Your Job Description" value={userJobDesc} rows="5"></textarea>
+		<textarea name="Your Job Description" bind:value={userJobDesc} rows="5"></textarea>
 
 		<label for="Target Job Title"> Target Job Title </label>  
-		<input name="Target Job Title" type="text" value={targetJobTitle} required />
+		<input name="Target Job Title" type="text" bind:value={targetJobTitle} required />
 
 		<label for="Target Job Description"> Job Description </label>
-		<textarea name="Target Job Description" value={targetJobDesc} rows="5"></textarea>
+		<textarea name="Target Job Description" bind:value={targetJobDesc} rows="5"></textarea>
 
 		<label>
 			AI Model:
