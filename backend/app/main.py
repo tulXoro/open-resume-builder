@@ -18,7 +18,6 @@ app.add_middleware(
 local_models = []
 
 with httpx.Client() as client:
-    print("Attempting to get models")
     try:
         response = client.get("http://ollama:11434/api/tags")
         local_models = response.json()
@@ -27,30 +26,36 @@ with httpx.Client() as client:
         print(f"Error fetching models: {str(e)}")
 
 class ResumeRequest(BaseModel):
-    background: str
-    job_description: str
-    model: str = "mixtral"
+    user_job_title: str
+    user_job_description: str
+    target_job_title: str
+    target_job_description: str
+    model: str = ""
     
 @app.get("/api/models")
 async def get_models():
-    print("Attempting to get models")
     return local_models
 
 
-@app.post("/api/generate-resume")
-async def generate_resume(request: ResumeRequest):
+@app.post("/api/generate-experience")
+async def generate_experience(request: ResumeRequest):
 
     try:
         prompt = f"""[ROLE] Expert Resume Writer
 [TASK] Generate bullet points for job experience
-[FOCUS] Highlight transferable skills from the user's background: {request.background}
-[TARGET JOB] Tailor the bullet points to match this job description: {request.job_description}
+[FOCUS] Highlight transferable skills from the user's experience:
+- Job Title: {request.user_job_title}
+- Job Description: {request.user_job_description}
+[TARGET JOB] Tailor the bullet points to match this target job:
+- Job Title: {request.target_job_title}
+- Job Description: {request.target_job_description}
 [FORMAT] Provide concise bullet points
 [REQUIREMENTS]
-- Use industry-specific keywords from the target job description
+- Use industry-specific keywords from the target job description to maximize ATS compatibility
 - Emphasize relevant achievements and skills
 - Quantify results where possible
-- Use professional and action-oriented language"""
+- Use professional, action-oriented language
+- Ensure the bullet points align with the target job's key responsibilities and qualifications"""
 
         async with httpx.AsyncClient() as client:
             response = await client.post(

@@ -2,8 +2,11 @@
 	import { onMount } from 'svelte';
 	import { ResumeData } from '$lib';
 
-	let background = $state('');
-	let jobDescription = $state('');
+	let userJobTitle = $state('');
+	let userJobDesc = $state('');
+	let targetJobTitle = $state('');
+	let targetJobDesc = $state('');
+
 	let resume = $state('');
 	let isLoading = $state(false);
 	let selectedModel = $state(''); // Default value
@@ -27,12 +30,14 @@
 	async function generateResume() {
 		isLoading = true;
 		try {
-			const response = await fetch('http://localhost:8000/api/generate-resume', {
+			const response = await fetch('http://localhost:8000/api/generate-experience', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					background: background,
-					job_description: jobDescription,
+					user_job_title: userJobTitle,
+					user_job_description: userJobDesc,
+					target_job_title: targetJobTitle,
+					target_job_description: targetJobDesc,
 					model: selectedModel
 				})
 			});
@@ -53,15 +58,17 @@
 	<ResumeData />
 
 	<form on:submit|preventDefault={generateResume}>
-		<label>
-			Your Background: a
-			<textarea value={background} rows="5"></textarea>
-		</label>
+		<label for="Your Job Title"> Your Job Title </label>
+		<input name="Your Job Title" type="text" value={userJobTitle} required />
 
-		<label>
-			Job Description:
-			<textarea value={jobDescription} rows="5"></textarea>
-		</label>
+		<label for="Your Job Description"> What you did: </label>
+		<textarea name="Your Job Description" value={userJobDesc} rows="5"></textarea>
+
+		<label for="Target Job Title"> Target Job Title </label>
+		<input name="Target Job Title" type="text" value={targetJobTitle} required />
+
+		<label for="Target Job Description"> Job Description </label>
+		<textarea name="Target Job Description" value={targetJobDesc} rows="5"></textarea>
 
 		<label>
 			AI Model:
