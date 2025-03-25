@@ -3,11 +3,11 @@
 	import { ResumeData } from '$lib';
 
 	let userJobTitle = $state('');
-	let userJobDesc = $state('');
-	let targetJobTitle = $state('');
-	let targetJobDesc = $state('');
+	let userJobDesc = '';
+	let targetJobTitle = '';
+	let targetJobDesc = '';
 
-	let resume = $state('');
+	let bulletPoints = '';
 	let isLoading = $state(false);
 	let selectedModel = $state(''); // Default value
 	/**
@@ -27,7 +27,11 @@
 		}
 	}
 
-	async function generateResume() {
+	/**
+	 * @param {{ preventDefault: () => void; }} event
+	 */
+	async function generateBulletPoints(event) {
+		event.preventDefault();
 		isLoading = true;
 		try {
 			const response = await fetch('http://localhost:8000/api/generate-experience', {
@@ -41,10 +45,10 @@
 					model: selectedModel
 				})
 			});
-			resume = await response.text();
+			bulletPoints = await response.json().then((data) => data.bullet_points);
 		} catch (error) {
 			console.error(error);
-			resume = 'Error generating resume';
+			bulletPoints = 'Error generating bullet points';
 		}
 		isLoading = false;
 	}
@@ -56,19 +60,18 @@
 	<h1>AI Resume Generator</h1>
 
 	<ResumeData />
-
-	<form on:submit|preventDefault={generateResume}>
+	<form onsubmit={generateBulletPoints}>
 		<label for="Your Job Title"> Your Job Title </label>
-		<input name="Your Job Title" type="text" value={userJobTitle} required />
+		<input name="Your Job Title" type="text" bind:value={userJobTitle} required />
 
 		<label for="Your Job Description"> What you did: </label>
-		<textarea name="Your Job Description" value={userJobDesc} rows="5"></textarea>
+		<textarea name="Your Job Description" bind:value={userJobDesc} rows="5"></textarea>
 
-		<label for="Target Job Title"> Target Job Title </label>
-		<input name="Target Job Title" type="text" value={targetJobTitle} required />
+		<label for="Target Job Title"> Target Job Title </label>  
+		<input name="Target Job Title" type="text" bind:value={targetJobTitle} required />
 
 		<label for="Target Job Description"> Job Description </label>
-		<textarea name="Target Job Description" value={targetJobDesc} rows="5"></textarea>
+		<textarea name="Target Job Description" bind:value={targetJobDesc} rows="5"></textarea>
 
 		<label>
 			AI Model:
@@ -80,18 +83,18 @@
 		</label>
 
 		<button type="submit" disabled={isLoading}>
-			{isLoading ? 'Generating...' : 'Generate Resume'}
+			{isLoading ? 'Generating...' : 'Generate Bullet Points'}
 		</button>
 	</form>
 
 	{#if isLoading}
-		<p>Generating your resume, please wait...</p>
+		<p>Generating your bullet points for {userJobTitle}, please wait...</p>
 	{/if}
 
-	{#if resume}
+	{#if bulletPoints}
 		<div class="resume-output">
-			<h2>Generated Resume</h2>
-			<pre>{resume}</pre>
+			<h2>Generated Bullet Points</h2>
+			<pre>{bulletPoints}</pre>
 		</div>
 	{/if}
 </main>

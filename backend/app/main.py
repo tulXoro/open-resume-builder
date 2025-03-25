@@ -41,21 +41,15 @@ async def get_models():
 async def generate_experience(request: ResumeRequest):
 
     try:
-        prompt = f"""[ROLE] Expert Resume Writer
-[TASK] Generate bullet points for job experience
-[FOCUS] Highlight transferable skills from the user's experience:
-- Job Title: {request.user_job_title}
-- Job Description: {request.user_job_description}
-[TARGET JOB] Tailor the bullet points to match this target job:
-- Job Title: {request.target_job_title}
-- Job Description: {request.target_job_description}
-[FORMAT] Provide concise bullet points
-[REQUIREMENTS]
-- Use industry-specific keywords from the target job description to maximize ATS compatibility
-- Emphasize relevant achievements and skills
-- Quantify results where possible
-- Use professional, action-oriented language
-- Ensure the bullet points align with the target job's key responsibilities and qualifications"""
+        prompt = f"""You are an expert resume writer. Generate bullet points for job experience based on the following details:
+
+The user's current or previous job title is "{request.user_job_title}", and their responsibilities include:
+{request.user_job_description}
+
+The target job title is "{request.target_job_title}", and the job description is as follows:
+{request.target_job_description}
+
+Focus on highlighting transferable skills and tailoring the bullet points to match the target job. Use industry-specific keywords from the target job description to maximize ATS compatibility. Emphasize relevant achievements and skills, quantify results where possible, and use professional, action-oriented language. Ensure the bullet points align with the key responsibilities and qualifications of the target job."""
 
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -74,7 +68,6 @@ async def generate_experience(request: ResumeRequest):
             
             # Handle non-200 status codes with detailed error information
             if response.status_code != 200:
-                
                 try:
                     error_details = response.json()  # Attempt to parse the error response as JSON
                 except Exception:
@@ -82,7 +75,7 @@ async def generate_experience(request: ResumeRequest):
                 raise HTTPException(
                     status_code=response.status_code,
                     detail={
-                        "error": "Ollama API! " + request.model + " failed to generate bullet points",
+                        "error": f"Ollama API ({request.model}) failed to generate bullet points.",
                         "response": error_details
                     }
                 )

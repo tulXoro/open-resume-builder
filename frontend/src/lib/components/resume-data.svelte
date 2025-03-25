@@ -36,13 +36,13 @@
 		{#each educationForms as form, i}
 			<div>
 				<label for="school"> School: </label>
-				<input value={form.school} type="text" name="school" id="school" required />
+				<input bind:value={form.school} type="text" name="school" id="school" required />
 				<label for="degree"> Degree: </label>
-				<input value={form.degree} type="text" name="degree" id="degree" required />
+				<input bind:value={form.degree} type="text" name="degree" id="degree" required />
 				<label for="start_date"> Start Date: </label>
-				<input value={form.start_date} type="date" name="start_date" id="start_date" required />
+				<input bind:value={form.start_date} type="date" name="start_date" id="start_date" required />
 				<label for="end_date"> End Date (or expected): </label>
-				<input value={form.end_date} type="date" name="end_date" id="end_date" required />
+				<input bind:value={form.end_date} type="date" name="end_date" id="end_date" required />
 				<button
 					type="button"
 					onclick={() => {
