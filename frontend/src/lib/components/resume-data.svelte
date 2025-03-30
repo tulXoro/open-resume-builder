@@ -1,7 +1,18 @@
-<script>
-	let education = $state([]);
+<script lang="ts">
+	let education: Education[] = $state([]);
 
-	let educationForms = $state([]);
+	let educationForms: Education[] = $state([]);
+
+	interface Education {
+		index: number;
+		school: string;
+		degree: string;
+		start_date: string;
+		end_date: string;
+	}
+
+	// Future me: why do we have two arrays for education? 3/29/2025
+
 </script>
 
 <!-- Resume Container -->

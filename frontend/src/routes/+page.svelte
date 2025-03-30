@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { ResumeData } from '$lib';
 
@@ -10,10 +10,8 @@
 	let bulletPoints = $state('');
 	let isLoading = $state(false);
 	let selectedModel = $state(''); // Default value
-	/**
-	 * @type {any[]}
-	 */
-	let models = $state([]);
+
+	let models: any[] = $state([]);
 
 	async function getModels() {
 		try {
@@ -27,10 +25,7 @@
 		}
 	}
 
-	/**
-	 * @param {{ preventDefault: () => void; }} event
-	 */
-	async function generateBulletPoints(event) {
+	async function generateBulletPoints(event: { preventDefault: () => void; }) {
 		event.preventDefault();
 		isLoading = true;
     console.log(selectedModel);
