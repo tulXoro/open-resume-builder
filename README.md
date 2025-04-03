@@ -10,7 +10,7 @@ This is a simple resume builder that uses AI to generate a resume based on the u
 
 The app is built using a microservices architecture, with the following components:
 
-- **Frontend**: Uses [Sveltekit](https://svelte.dev/) to create a simple web app that allows the user to input their information and job description. It uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+- **Frontend**: Uses [Sveltekit](https://svelte.dev/docs/kit/introduction) to create a simple web app that allows the user to input their information and job description. It uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 - **Backend**: Uses [Python](https://www.python.org/) and [FastAPI](https://fastapi.tiangolo.com/) to create a simple API that takes the user's input and job description.
 - **LLM**: Uses [Ollama](https://ollama.com/) to run the LLMs locally. The LLM is used to generate the resume based on the user's input and job description.
 
