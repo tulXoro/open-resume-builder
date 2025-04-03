@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ResumeData } from '$lib';
+	import { ResumeBuilder } from '$lib';
 
 	let userJobTitle = $state('');
 	let userJobDesc = $state('');
@@ -52,10 +52,12 @@
 	onMount(getModels);
 </script>
 
-<main>
-	<h1>AI Resume Generator</h1>
+<h1>AI Resume Generator</h1>
 
-	<ResumeData />
+<main class='flex flex-row'>
+	
+
+	<ResumeBuilder />
 	<form onsubmit={generateBulletPoints}>
 		<label for="Your Job Title"> Your Job Title </label>
 		<input name="Your Job Title" type="text" bind:value={userJobTitle} required />

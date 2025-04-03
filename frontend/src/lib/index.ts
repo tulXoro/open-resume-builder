@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
-import ResumeData from './components/resume-data.svelte'
+import ResumeBuilder from './components/resume-builder.svelte'
 
 export {
-  ResumeData
+  ResumeBuilder
 }
