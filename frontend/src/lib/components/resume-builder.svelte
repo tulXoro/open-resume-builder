@@ -1,21 +1,10 @@
 <script lang="ts">
 	import { ResumeData } from "$lib";
 
-	interface Education {
-		index: number;
-		school: string;
-		degree: string;
-		start_date: string;
-		end_date: string;
-	}
-
-	let educationList: Education[] = [];
-
-
 </script>
 
 <!-- Resume Container -->
-<div class='bg-teal-500 p-4 h-screen overflow-y-scroll w-4xl'>
+<div class='bg-slate-500 p-12 h-screen overflow-y-scroll w-4xl'>
 	<form class='flex flex-col gap-4'>
 		<div>
 			<h1 class='text-2xl font-bold'>Personal Details</h1>
@@ -36,7 +25,30 @@
 		</div>
 
 		<div>
-			<h1 class='text-2xl font-bold'> Education: </h1>
+
+			<div class='flex flex-row'>
+				<h1 class='text-2xl font-bold'> Education </h1>
+
+				<button
+				class='border-2 border-green-500 bg-green-500 text-white rounded-md p-2 ml-auto mr-0'
+				type="button"
+				onclick={() => {
+					ResumeData.educations = [
+						{
+							index: ResumeData.educations.length,
+							school: '',
+							degree: '',
+							startDate: '',
+							endDate: ''
+						},
+						...ResumeData.educations 	
+					];
+				}}
+			>
+				Add Education
+			</button>
+			</div>
+
 
 				{#each ResumeData.educations as form, i}
 				<div class='flex flex-col my-4 p-4 border-2 border-gray-300 rounded-md shadow-md'>
@@ -77,25 +89,6 @@
 				</div>
 			{/each}
 
-
-			<button
-				class='border-2 border-green-500 bg-green-500 text-white rounded-md p-2'
-				type="button"
-				onclick={() => {
-					ResumeData.educations = [
-						...ResumeData.educations,
-						{
-							index: ResumeData.educations.length,
-							school: '',
-							degree: '',
-							startDate: '',
-							endDate: ''
-						}
-					];
-				}}
-			>
-				Add Education
-			</button>
 		</div>
 
 	</form>
