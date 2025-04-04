@@ -25,10 +25,10 @@
 		}
 	}
 
-	async function generateBulletPoints(event: { preventDefault: () => void; }) {
+	async function generateBulletPoints(event: { preventDefault: () => void }) {
 		event.preventDefault();
 		isLoading = true;
-    console.log(selectedModel);
+		console.log(selectedModel);
 		try {
 			const response = await fetch('http://localhost:8000/api/generate-experience', {
 				method: 'POST',
@@ -52,9 +52,7 @@
 	onMount(getModels);
 </script>
 
-<main class='flex flex-row'>
-	
-
+<main class="flex flex-row">
 	<ResumeBuilder />
 	<form onsubmit={generateBulletPoints}>
 		<label for="Your Job Title"> Your Job Title </label>
@@ -63,7 +61,7 @@
 		<label for="Your Job Description"> What you did: </label>
 		<textarea name="Your Job Description" bind:value={userJobDesc} rows="5"></textarea>
 
-		<label for="Target Job Title"> Target Job Title </label>  
+		<label for="Target Job Title"> Target Job Title </label>
 		<input name="Target Job Title" type="text" bind:value={targetJobTitle} required />
 
 		<label for="Target Job Description"> Job Description </label>
