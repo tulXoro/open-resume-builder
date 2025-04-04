@@ -1,6 +1,5 @@
 <script lang="ts">
-
-	let educationForms: Education[] = $state([]);
+	import { ResumeData } from "$lib";
 
 	interface Education {
 		index: number;
@@ -10,61 +9,62 @@
 		end_date: string;
 	}
 
+	let educationList: Education[] = [];
 
 
 </script>
 
 <!-- Resume Container -->
-<div class='bg-teal-500 p-4 h-screen overflow-y-scroll'>
+<div class='bg-teal-500 p-4 h-screen overflow-y-scroll w-4xl'>
 	<form class='flex flex-col gap-4'>
 		<div>
 			<h1 class='text-2xl font-bold'>Personal Details</h1>
-			<div>
+			<div class='flex flex-col'>
 				<label for="full_name"> Full name: </label>
-				<input type="text" name="full_name" id="full_name" required />
+				<input bind:value={ResumeData.fullName} type="text" name="full_name" id="full_name" placeholder="Full name..." required />
 			</div>
 			
-			<div>
+			<div class='flex flex-col'>
 				<label for="email"> Email: </label>
-				<input type="email" name="email" id="email" required />
+				<input bind:value={ResumeData.email} type="email" name="email" id="email" placeholder="Email..." required />
 			</div>
 			
-			<div>
+			<div class='flex flex-col'>
 				<label for="phone"> Phone: </label>
-				<input type="tel" name="phone" id="phone" required />
+				<input bind:value={ResumeData.phone} type="tel" name="phone" id="phone" placeholder="Phone number..." required />
 			</div>
 		</div>
 
 		<div>
 			<h1 class='text-2xl font-bold'> Education: </h1>
 
-				{#each educationForms as form, i}
-				<div class='my-4 p-4 border-2 border-gray-300 rounded-md'>
-					<div>
+				{#each ResumeData.educations as form, i}
+				<div class='flex flex-col my-4 p-4 border-2 border-gray-300 rounded-md shadow-md'>
+					<div class='flex flex-col'>
 						<label for="school"> School: </label>
 						<input bind:value={form.school} type="text" name="school" id="school" required />
 					</div>
 					
-					<div>
+					<div class='flex flex-col'>
 						<label for="degree"> Degree: </label>
 						<input bind:value={form.degree} type="text" name="degree" id="degree" required />
 					</div>
 
-					<div>
+					<div class='flex flex-col'>
 						<label for="start_date"> Start Date: </label>
-						<input bind:value={form.start_date} type="date" name="start_date" id="start_date" required />
+						<input bind:value={form.startDate} type="date" name="start_date" id="start_date" required />
 					</div>
 
-					<div>
+					<div class='flex flex-col'>
 						<label for="end_date"> End Date (or expected): </label>
-						<input bind:value={form.end_date} type="date" name="end_date" id="end_date" required />
+						<input bind:value={form.endDate} type="date" name="end_date" id="end_date" required />
 					</div>
 
 					<button
-					class='border-2 border-red-500 bg-red-500 text-white rounded-md p-2'
+					class='border-2 border-red-500 bg-red-500 text-white rounded-md p-2 ml-auto mr-0 mt-1'
 						type="button"
 						onclick={() => {
-							educationForms = educationForms
+							ResumeData.educations = ResumeData.educations
 								.filter((_, index) => index !== i)
 								.map((form, newIndex) => ({
 									...form,
@@ -82,14 +82,14 @@
 				class='border-2 border-green-500 bg-green-500 text-white rounded-md p-2'
 				type="button"
 				onclick={() => {
-					educationForms = [
-						...educationForms,
+					ResumeData.educations = [
+						...ResumeData.educations,
 						{
-							index: educationForms.length,
+							index: ResumeData.educations.length,
 							school: '',
 							degree: '',
-							start_date: '',
-							end_date: ''
+							startDate: '',
+							endDate: ''
 						}
 					];
 				}}

@@ -52,8 +52,6 @@
 	onMount(getModels);
 </script>
 
-<h1>AI Resume Generator</h1>
-
 <main class='flex flex-row'>
 	
 
