@@ -4,6 +4,8 @@
 
 This is a simple resume builder that uses AI to generate a resume based on the user's input, and a job description.
 
+***DISCLAIMER: This is not meant to be used seriously. It is not a replacement for building your own resume. Use at your own risk.***
+
 ## How it works
 
 ### Architecture
