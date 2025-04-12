@@ -2,9 +2,11 @@
 import ResumeBuilder from './components/resume-builder.svelte'
 import { ResumeData } from './resumedata.svelte'
 import Education from './components/builder/education.svelte'
+import ResumeViewer from './components/resume-viewer.svelte'
 
 export {
   ResumeBuilder,
   ResumeData,
-  Education
+  Education,
+  ResumeViewer
 }
