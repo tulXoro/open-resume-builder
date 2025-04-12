@@ -38,7 +38,7 @@
 					type="tel"
 					name="phone"
 					id="phone"
-					placeholder="Phone number..."
+					placeholder="(XXX) XXX-XXXX"
 					required
 				/>
 			</div>
