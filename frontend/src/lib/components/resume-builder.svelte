@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { ResumeData } from '$lib';
+	import { ResumeData, Education } from '$lib';
 </script>
 
 <!-- Resume Container -->
 <div class="w-4xl h-screen overflow-y-scroll bg-slate-500 p-12">
-	<form class="flex flex-col gap-4">
+	<div class="flex flex-col gap-4">
 		<div>
 			<h1 class="text-2xl font-bold">Personal Details</h1>
 			<div class="flex flex-col">
@@ -54,6 +54,8 @@
 					onclick={() => {
 						ResumeData.educations = [
 							{
+								// index is only used for the component to know which education it is
+								// but we don't need to keep track of it in the array
 								index: ResumeData.educations.length,
 								school: '',
 								degree: '',
@@ -62,56 +64,24 @@
 							},
 							...ResumeData.educations
 						];
+						console.log(ResumeData.educations);
 					}}
 				>
 					Add Education
 				</button>
 			</div>
 
-			{#each ResumeData.educations as form, i}
-				<div class="my-4 flex flex-col rounded-md border-2 border-gray-300 p-4 shadow-md">
-					<div class="flex flex-col">
-						<label for="school"> School: </label>
-						<input bind:value={form.school} type="text" name="school" id="school" required />
-					</div>
-
-					<div class="flex flex-col">
-						<label for="degree"> Degree: </label>
-						<input bind:value={form.degree} type="text" name="degree" id="degree" required />
-					</div>
-
-					<div class="flex flex-col">
-						<label for="start_date"> Start Date: </label>
-						<input
-							bind:value={form.startDate}
-							type="date"
-							name="start_date"
-							id="start_date"
-							required
-						/>
-					</div>
-
-					<div class="flex flex-col">
-						<label for="end_date"> End Date (or expected): </label>
-						<input bind:value={form.endDate} type="date" name="end_date" id="end_date" required />
-					</div>
-
-					<button
-						class="ml-auto mr-0 mt-1 rounded-md border-2 border-red-500 bg-red-500 p-2 text-white"
-						type="button"
-						onclick={() => {
-							ResumeData.educations = ResumeData.educations
-								.filter((_, index) => index !== i)
-								.map((form, newIndex) => ({
-									...form,
-									index: newIndex
-								}));
-						}}
-					>
-						Remove Education
-					</button>
-				</div>
+			<!-- We only need the index of the education because
+			 the education component will automatically update itself
+			 according to the index it is listed as in the array -->
+			{#each ResumeData.educations as _, i}
+				<Education 
+					{i}
+				/>
 			{/each}
 		</div>
-	</form>
+
+
+
+	</div>
 </div>
